@@ -1,0 +1,14 @@
+{
+    "user_data": {
+        "first_name": "john",
+        "last_name": "tom",
+        "street": "Hermannplatz 11",
+        "city": "Berlin",
+        "state": "Berlin",
+        "zip_code": "10967",
+        "phone": "030123456",
+        "ssn": "123456789",
+        "username": "johntom",
+        "password": "Passw0rd!"
+    }
+}

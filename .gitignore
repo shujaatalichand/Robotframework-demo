@@ -1,0 +1,19 @@
+# Browser binaries / drivers (downloaded, machine-specific)
+chromedriver/
+geckodriver/
+firefox/
+
+# Robot Framework / test output
+results/
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.pytest_cache/
+venv/
+.venv/
+env/
+
+# OS
+.DS_Store
