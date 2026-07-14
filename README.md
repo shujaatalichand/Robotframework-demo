@@ -5,6 +5,10 @@ Robot Framework + SeleniumLibrary UI/API automation suite for the
 It covers home page sanity checks, user registration, login, and account
 creation (savings/checking) flows.
 
+CI runs the `sanity` suite headlessly on every push/PR via
+[.github/workflows/ci.yml](.github/workflows/ci.yml). Licensed under
+[MIT](LICENSE).
+
 ## Repo structure
 
 ```

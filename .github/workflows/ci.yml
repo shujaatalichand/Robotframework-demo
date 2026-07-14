@@ -1,0 +1,53 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      tags:
+        description: "Robot tag to run (e.g. sanity, Regression, newtest)"
+        required: false
+        default: "sanity"
+      env:
+        description: "Target environment (prod or local)"
+        required: false
+        default: "prod"
+
+jobs:
+  robot-tests:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        browser: [headlesschrome, headlessfirefox]
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run Robot Framework tests (${{ matrix.browser }})
+        run: |
+          robot \
+            --outputdir results/${{ matrix.browser }} \
+            --include ${{ github.event.inputs.tags || 'sanity' }} \
+            --variable BROWSER:${{ matrix.browser }} \
+            --variable ENV:${{ github.event.inputs.env || 'prod' }} \
+            testsuites/
+
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: robot-results-${{ matrix.browser }}
+          path: results/${{ matrix.browser }}
