@@ -1,0 +1,38 @@
+stages:
+  - test
+
+variables:
+  TAGS: "sanity"
+  ENV: "prod"
+
+.robot_tests:
+  stage: test
+  image: python:3.11-slim
+  before_script:
+    - apt-get update && apt-get install -y --no-install-recommends chromium chromium-driver firefox-esr wget
+    - wget -q https://github.com/mozilla/geckodriver/releases/latest/download/geckodriver-linux64.tar.gz -O /tmp/geckodriver.tar.gz || true
+    - tar -xzf /tmp/geckodriver.tar.gz -C /usr/local/bin 2>/dev/null || true
+    - pip install --no-cache-dir -r requirements.txt
+  script:
+    - >
+      robot
+      --outputdir results/${BROWSER}
+      --include ${TAGS}
+      --variable BROWSER:${BROWSER}
+      --variable ENV:${ENV}
+      testsuites/
+  artifacts:
+    when: always
+    paths:
+      - results/${BROWSER}
+    expire_in: 1 week
+
+robot-tests:headlesschrome:
+  extends: .robot_tests
+  variables:
+    BROWSER: "headlesschrome"
+
+robot-tests:headlessfirefox:
+  extends: .robot_tests
+  variables:
+    BROWSER: "headlessfirefox"
