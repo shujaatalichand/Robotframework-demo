@@ -139,17 +139,25 @@ The image's `ENTRYPOINT` is `python3 -m robot --outputdir results`, with
 name replace that default `CMD` and are appended to the entrypoint — so the
 same `--variable`/`--include` flags used for local runs (see
 [Configuration](#configuration) and [Run by tag](#run-by-tag) above) work
-here too, just remember to end with `testsuites/`:
+here too, just remember to end with `testsuites/`. `run-docker-tests.sh`
+forwards any arguments you give it the same way.
+
+```bash
+# Full suite against prod (same as no args at all)
+./run-docker-tests.sh --variable ENV:prod --variable BROWSER:chrome testsuites/
+
+# Only sanity-tagged tests against prod
+./run-docker-tests.sh --variable ENV:prod --include sanity testsuites/
+
+# Only regression-tagged tests against prod
+./run-docker-tests.sh --variable ENV:prod --include Regression testsuites/
+```
+
+Equivalent raw `docker run` form:
 
 ```bash
 docker run --rm -v "$(pwd)/results:/robot/results" robotframework-demo \
-  --variable ENV:local --variable BROWSER:chrome --include sanity testsuites/
-```
-
-`run-docker-tests.sh` forwards any arguments you give it the same way:
-
-```bash
-./run-docker-tests.sh --variable ENV:local --include Regression testsuites/
+  --variable ENV:prod --variable BROWSER:chrome --include sanity testsuites/
 ```
 
 ## Test output
