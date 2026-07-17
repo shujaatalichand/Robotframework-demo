@@ -2,7 +2,7 @@ stages:
   - test
 
 variables:
-  TAGS: "sanity"
+  TAGS: "Regression"
   ENV: "prod"
 
 .robot_tests:
