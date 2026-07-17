@@ -11,13 +11,13 @@ Test Teardown    Close Browser
 *** Test Cases ***
 Home page Verifification
     [Documentation]  Para Bank home page test
-    [Tags]    sanity
+    [Tags]    sanity    Regression
     Title Should Be    ParaBank | Welcome | Online Banking
     
 
 Home Page Navigation Links Should Be Present
     [Documentation]    Verify the main navigation links are present on the home page
-    [Tags]    sanity
+    [Tags]    sanity    Regression
     Verify Nav Links
 
 New User Registration

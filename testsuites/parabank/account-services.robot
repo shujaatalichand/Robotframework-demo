@@ -12,7 +12,7 @@ Test Teardown    Close Browser
 *** Test Cases ***
 Open New Savings Account
     [Documentation]    This will open a new account for the user
-    [Tags]    newtest
+    [Tags]    accounts    Regression
     Open User Registration Section
     ${unique_username}=    Generate Random Username    ${user_data.username}
     ${registration_payload}=    Copy Dictionary    ${user_data}
@@ -24,7 +24,7 @@ Open New Savings Account
 
 Open New Checking Account
     [Documentation]    This will open a new account for the user
-    [Tags]    newtest
+    [Tags]    accounts    Regression
     Open User Registration Section
     ${unique_username}=    Generate Random Username    ${user_data.username}
     ${registration_payload}=    Copy Dictionary    ${user_data}
