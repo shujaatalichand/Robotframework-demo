@@ -5,9 +5,11 @@ Robot Framework + SeleniumLibrary UI/API automation suite for the
 It covers home page sanity checks, user registration, login, and account
 creation (savings/checking) flows.
 
-CI runs the `sanity` suite headlessly on every push/PR via
-[.github/workflows/ci.yml](.github/workflows/ci.yml). Licensed under
-[MIT](LICENSE).
+CI runs the `Regression` suite headlessly on every push/PR, building and
+running the same Docker image via `run-docker-tests.sh` in both
+[.github/workflows/ci.yml](.github/workflows/ci.yml) (GitHub Actions) and
+[.gitlab-ci.yml](.gitlab-ci.yml) (GitLab CI, via docker-in-docker). Licensed
+under [MIT](LICENSE).
 
 ## Repo structure
 

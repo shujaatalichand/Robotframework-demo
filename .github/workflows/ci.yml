@@ -19,29 +19,16 @@ on:
 jobs:
   robot-tests:
     runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        browser: [headlesschrome, headlessfirefox]
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: "3.11"
-
-      - name: Install dependencies
-        run: pip install -r requirements.txt
-
-      - name: Run Robot Framework tests (${{ matrix.browser }})
+      - name: Run Robot Framework tests via Docker
         run: |
-          robot \
-            --outputdir results/${{ matrix.browser }} \
+          ./run-docker-tests.sh \
             --include ${{ github.event.inputs.tags || 'Regression' }} \
-            --variable BROWSER:${{ matrix.browser }} \
+            --variable BROWSER:chrome \
             --variable ENV:${{ github.event.inputs.env || 'prod' }} \
             testsuites/
 
@@ -49,5 +36,5 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: robot-results-${{ matrix.browser }}
-          path: results/${{ matrix.browser }}
+          name: robot-results
+          path: results

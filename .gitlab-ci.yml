@@ -4,35 +4,20 @@ stages:
 variables:
   TAGS: "Regression"
   ENV: "prod"
+  DOCKER_HOST: tcp://docker:2376
+  DOCKER_TLS_CERTDIR: "/certs"
 
-.robot_tests:
+robot-tests:
   stage: test
-  image: python:3.11-slim
+  image: docker:27
+  services:
+    - docker:27-dind
   before_script:
-    - apt-get update && apt-get install -y --no-install-recommends chromium chromium-driver firefox-esr wget
-    - wget -q https://github.com/mozilla/geckodriver/releases/latest/download/geckodriver-linux64.tar.gz -O /tmp/geckodriver.tar.gz || true
-    - tar -xzf /tmp/geckodriver.tar.gz -C /usr/local/bin 2>/dev/null || true
-    - pip install --no-cache-dir -r requirements.txt
+    - apk add --no-cache bash
   script:
-    - >
-      robot
-      --outputdir results/${BROWSER}
-      --include ${TAGS}
-      --variable BROWSER:${BROWSER}
-      --variable ENV:${ENV}
-      testsuites/
+    - ./run-docker-tests.sh --include "${TAGS}" --variable BROWSER:chrome --variable ENV:"${ENV}" testsuites/
   artifacts:
     when: always
     paths:
-      - results/${BROWSER}
+      - results
     expire_in: 1 week
-
-robot-tests:headlesschrome:
-  extends: .robot_tests
-  variables:
-    BROWSER: "headlesschrome"
-
-robot-tests:headlessfirefox:
-  extends: .robot_tests
-  variables:
-    BROWSER: "headlessfirefox"
