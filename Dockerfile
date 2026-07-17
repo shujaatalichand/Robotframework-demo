@@ -17,4 +17,5 @@ COPY testsuites/ ./testsuites/
 COPY resources/ ./resources/
 COPY execution/ ./execution/
 
-CMD ["python3", "-m", "robot", "--outputdir", "results", "testsuites/"]
+ENTRYPOINT ["python3", "-m", "robot", "--outputdir", "results"]
+CMD ["testsuites/"]

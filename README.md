@@ -129,7 +129,28 @@ docker run --rm -v "$(pwd)/results:/robot/results" robotframework-demo
 
 The container always runs headless (`HEADLESS=true` is set in the
 [Dockerfile](Dockerfile)); running `robot`/`Open Browser` directly on your
-host (outside Docker) still opens a normal visible browser.
+host (outside Docker) still opens a normal visible browser. The image only
+has Chrome/Chromium installed, so `BROWSER` must stay `chrome`.
+
+### Parameterize env / browser / tags
+
+The image's `ENTRYPOINT` is `python3 -m robot --outputdir results`, with
+`CMD` defaulting to `testsuites/`. Any arguments you pass after the image
+name replace that default `CMD` and are appended to the entrypoint — so the
+same `--variable`/`--include` flags used for local runs (see
+[Configuration](#configuration) and [Run by tag](#run-by-tag) above) work
+here too, just remember to end with `testsuites/`:
+
+```bash
+docker run --rm -v "$(pwd)/results:/robot/results" robotframework-demo \
+  --variable ENV:local --variable BROWSER:chrome --include sanity testsuites/
+```
+
+`run-docker-tests.sh` forwards any arguments you give it the same way:
+
+```bash
+./run-docker-tests.sh --variable ENV:local --include Regression testsuites/
+```
 
 ## Test output
 
