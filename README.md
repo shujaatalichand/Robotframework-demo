@@ -45,6 +45,9 @@ under [MIT](LICENSE).
 ## Install dependencies
 
 ```bash
+git clone https://github.com/shujaatalichand/Robotframework-demo.git
+cd Robotframework-demo
+
 python3 -m venv .venv
 source .venv/bin/activate
 pip install -r requirements.txt
