@@ -10,7 +10,7 @@ on:
       tags:
         description: "Robot tag to run (e.g. sanity, Regression, newtest)"
         required: false
-        default: "sanity"
+        default: "Regression"
       env:
         description: "Target environment (prod or local)"
         required: false
@@ -40,7 +40,7 @@ jobs:
         run: |
           robot \
             --outputdir results/${{ matrix.browser }} \
-            --include ${{ github.event.inputs.tags || 'sanity' }} \
+            --include ${{ github.event.inputs.tags || 'Regression' }} \
             --variable BROWSER:${{ matrix.browser }} \
             --variable ENV:${{ github.event.inputs.env || 'prod' }} \
             testsuites/
