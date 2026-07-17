@@ -14,6 +14,8 @@ CI runs the `sanity` suite headlessly on every push/PR via
 ```
 .
 ├── requirements.txt              # Python/Robot Framework dependencies
+├── Dockerfile                    # Containerized test runner (headless Chromium)
+├── run-docker-tests.sh           # Build + run the Docker image, print report links
 ├── testsuites/
 │   └── parabank/
 │       ├── homepage.robot        # Home page sanity & regression tests
@@ -103,6 +105,31 @@ robot --outputdir results --include Regression --variable ENV:local --variable B
 # Exclude a tag
 robot --outputdir results --exclude newtest testsuites/
 ```
+
+## Running the tests with Docker
+
+No local Python/Chrome setup required — the image bundles headless Chromium
+and its matching driver.
+
+```bash
+./run-docker-tests.sh
+```
+
+This builds the `robotframework-demo` image, runs the full suite in a
+container, and bind-mounts `results/` so the log/report/output files land
+directly in the repo (no manual copy step). It finishes by printing clickable
+links to `results/report.html` and `results/log.html`.
+
+Equivalent manual steps:
+
+```bash
+docker build -t robotframework-demo .
+docker run --rm -v "$(pwd)/results:/robot/results" robotframework-demo
+```
+
+The container always runs headless (`HEADLESS=true` is set in the
+[Dockerfile](Dockerfile)); running `robot`/`Open Browser` directly on your
+host (outside Docker) still opens a normal visible browser.
 
 ## Test output
 
