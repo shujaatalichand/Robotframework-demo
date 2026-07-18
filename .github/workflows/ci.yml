@@ -17,7 +17,7 @@ on:
         default: "prod"
 
 jobs:
-  robot-tests:
+  Test:
     runs-on: ubuntu-latest
 
     steps:
